@@ -33,7 +33,7 @@ class TriggerInput(BaseModel):
 
 class TriggerOutput(BaseModel):
     """定时触发节点的输出"""
-    trigger_type: str = Field(..., description="触发类型：morning（早安）/ evening（晚安）")
+    trigger_type: str = Field(..., description="触发类型：weather（天气预报）/ morning（早安问候）/ evening（晚安问候）")
 
 
 class WeatherQueryInput(BaseModel):
@@ -48,7 +48,7 @@ class WeatherQueryOutput(BaseModel):
 
 class GreetingGenerateInput(BaseModel):
     """问候语生成节点的输入"""
-    trigger_type: str = Field(default="morning", description="触发类型：morning（早安）/ evening（晚安）")
+    trigger_type: str = Field(default="morning", description="触发类型：weather（天气预报）/ morning（早安）/ evening（晚安）")
     weather_info: str = Field(default="", description="天气查询结果")
 
 

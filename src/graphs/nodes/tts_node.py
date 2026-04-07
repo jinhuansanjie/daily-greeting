@@ -29,7 +29,7 @@ def tts_node(state: TTSInput, config: RunnableConfig, runtime: Runtime[Context])
         audio_url, audio_size = tts_client.synthesize(
             uid="daily_greeting",
             text=state.greeting_text,
-            speaker="zh_female_xiaohe_uranus_bigtts",  # 使用温柔女声
+            speaker="zh_female_vv_uranus_bigtts",  # 使用温柔女声Vivi
             audio_format="mp3",
             sample_rate=24000
         )
