@@ -54,10 +54,11 @@ def send_message_to_doubao(text: str, audio_url: str = "") -> dict:
     if audio_url:
         content = f"{text}\n\n🎙️ 语音播报：{audio_url}"
     
-    # 消息体
+    # 消息体 - Coze API需要user_id参数
     payload = {
         "bot_id": bot_id,
         "stream": False,
+        "user_id": "daily_greeting_user",
         "auto_save_history": True,
         "additional_messages": [
             {

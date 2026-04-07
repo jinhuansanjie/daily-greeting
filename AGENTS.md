@@ -9,7 +9,7 @@
 
 ## 工作流架构
 ```
-定时触发 → 天气查询 → 问候语生成 → 语音合成 → 消息发送
+定时触发 → 天气查询 → 问候语生成 → 语音合成 → 消息发送（豆包APP）
 ```
 
 ## 节点清单
@@ -20,7 +20,7 @@
 | weather_query | `nodes/weather_query_node.py` | task | 查询指定城市天气信息 | - |
 | greeting_generate | `nodes/greeting_generate_node.py` | agent | 使用LLM生成内容 | `config/greeting_llm_cfg.json` |
 | tts | `nodes/tts_node.py` | task | 将文字转换为语音 | - |
-| send_message | `nodes/send_message_node.py` | task | 发送消息到豆包APP | - |
+| send_message | `nodes/send_message_node.py` | task | 发送消息到豆包APP小暖暖 | - |
 
 **类型说明**: task(任务节点) / agent(大模型) / condition(条件分支) / looparray(列表循环) / loopcond(条件循环)
 
@@ -33,6 +33,12 @@
 - **城市设置**: 可在GraphInput中指定，默认"北京"
 - **LLM模型**: doubao-seed-2-0-lite-260215（均衡性能与成本）
 - **语音合成**: 使用温柔女声（zh_female_vv_uranus_bigtts）
+- **豆包APP**: 通过Coze API发送到"小暖暖"智能体
+
+## Coze API 配置
+- **API Token**: `pat_5qLzyX5FSrbxJXeFVW9fsWVKpq9OR0xIyaIEihOX1R9n58yx1SFciTKl64XhAWUF`
+- **Bot ID**: `7624738708238942234`（小暖暖）
+- **发送用户**: `daily_greeting_user`
 
 ## 外部定时触发配置
 
@@ -92,7 +98,3 @@ result = main_graph.invoke({
     "trigger_type": "evening"
 })
 ```
-
-## 注意事项
-- **微信机器人**: 未配置集成，如需微信推送请完成`integration-wechat-bot`集成配置
-- **豆包APP发送**: 当前实现为示例逻辑，需根据实际推送方式完善`send_message_node`
