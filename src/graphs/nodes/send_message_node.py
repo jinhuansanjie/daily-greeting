@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 # Coze API 配置
 COZE_API_BASE = "https://api.coze.cn"
 COZE_API_TOKEN = "pat_5qLzyX5FSrbxJXeFVW9fsWVKpq9OR0xIyaIEihOX1R9n58yx1SFciTKl64XhAWUF"
+COZE_BOT_ID = "7624738708238942234"
 
 
 def send_message_to_doubao(text: str, audio_url: str = "") -> dict:
@@ -33,8 +34,8 @@ def send_message_to_doubao(text: str, audio_url: str = "") -> dict:
     Returns:
         dict: 包含success和message的响应
     """
-    # 获取Bot ID和Conversation ID
-    bot_id = os.getenv("COZE_BOT_ID", "")
+    # Bot ID - 小暖暖
+    bot_id = COZE_BOT_ID
     conversation_id = os.getenv("COZE_CONVERSATION_ID", "")
     
     if not bot_id:
