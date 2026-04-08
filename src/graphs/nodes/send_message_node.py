@@ -18,7 +18,7 @@ from graphs.state import SendMessageInput, SendMessageOutput
 logger = logging.getLogger(__name__)
 
 # 企业微信机器人配置
-WECHAT_WEBHOOK_KEY = "245fd5e1589e0acc6c7d29db2ffc541ae7"
+WECHAT_WEBHOOK_KEY = "24855d96d8c319ac5eab4178313a893cc2"
 WECHAT_WEBHOOK_URL = f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={WECHAT_WEBHOOK_KEY}"
 
 
