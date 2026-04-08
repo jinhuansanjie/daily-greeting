@@ -22,16 +22,28 @@
 ### 1. 测试工作流
 ```bash
 # 测试天气预报
-python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '上海', 'trigger_type': 'weather'}))"
+python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '苏州', 'trigger_type': 'weather'}))"
 
 # 测试早安问候
-python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '上海', 'trigger_type': 'morning'}))"
+python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'}))"
 
 # 测试晚安问候
-python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '上海', 'trigger_type': 'evening'}))"
+python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'city': '苏州', 'trigger_type': 'evening'}))"
 ```
 
-### 2. 配置定时任务
+### 2. 一键部署（推荐）
+```bash
+# 运行一键部署脚本
+bash scripts/deploy.sh
+
+# 脚本会自动完成：
+# 1. 检查Python环境
+# 2. 安装依赖包
+# 3. 测试工作流
+# 4. 配置Cron定时任务
+```
+
+### 3. 配置定时任务
 
 #### 方式1：使用Cron（推荐）
 ```bash
@@ -39,9 +51,9 @@ python -c "from src.graphs.graph import main_graph; print(main_graph.invoke({'ci
 crontab -e
 
 # 添加以下3行
-30 7 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '上海', 'trigger_type': 'weather'})"
-31 7 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '上海', 'trigger_type': 'morning'})"
-30 22 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '上海', 'trigger_type': 'evening'})"
+30 7 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'weather'})"
+31 7 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})"
+30 22 * * * cd /workspace/projects && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'evening'})"
 
 # 查看已配置的任务
 crontab -l
@@ -107,6 +119,15 @@ python scripts/scheduler.py
 - coze-coding-dev-sdk (LLM, Search, TTS)
 - Pydantic
 - APScheduler (Python调度器)
+
+## 生产环境部署
+
+详细部署指南请查看 [DEPLOY.md](DEPLOY.md)，包含：
+- ✅ Cron定时任务部署
+- ✅ Supervisor + Python调度器部署
+- ✅ 云服务器部署（AWS/阿里云/腾讯云）
+- ✅ 监控和维护
+- ✅ 故障排查
 
 ## 常见问题
 
