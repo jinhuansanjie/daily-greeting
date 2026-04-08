@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class GlobalState(BaseModel):
     """全局状态定义"""
     trigger_type: str = Field(default="", description="触发类型：morning（早安）/ evening（晚安）")
-    city: str = Field(default="上海", description="城市名称")
+    city: str = Field(default="苏州", description="城市名称")
     weather_info: str = Field(default="", description="天气查询结果")
     greeting_text: str = Field(default="", description="生成的问候语文本")
     audio_url: str = Field(default="", description="生成的语音文件URL")
@@ -15,7 +15,7 @@ class GlobalState(BaseModel):
 
 class GraphInput(BaseModel):
     """工作流的输入"""
-    city: str = Field(default="上海", description="城市名称，用于查询当地天气")
+    city: str = Field(default="苏州", description="城市名称，用于查询当地天气")
     trigger_type: str = Field(default="morning", description="触发类型：morning（早安）/ evening（晚安）")
 
 
