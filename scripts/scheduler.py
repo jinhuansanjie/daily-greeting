@@ -8,6 +8,14 @@
     Ctrl+C
 """
 
+import sys
+import os
+
+# 添加项目目录到Python路径
+project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_dir)
+sys.path.insert(0, os.path.join(project_dir, 'src'))
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 from src.graphs.graph import main_graph
 import logging
