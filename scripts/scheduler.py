@@ -30,7 +30,7 @@ def send_weather():
     try:
         logger.info("开始发送天气预报...")
         result = main_graph.invoke({
-            "city": "上海",
+            "city": "苏州",
             "trigger_type": "weather"
         })
         logger.info(f"天气预报发送成功: {result.get('send_status')}")
@@ -45,7 +45,7 @@ def send_morning():
     try:
         logger.info("开始发送早安问候...")
         result = main_graph.invoke({
-            "city": "上海",
+            "city": "苏州",
             "trigger_type": "morning"
         })
         logger.info(f"早安问候发送成功: {result.get('send_status')}")
@@ -60,7 +60,7 @@ def send_evening():
     try:
         logger.info("开始发送晚安问候...")
         result = main_graph.invoke({
-            "city": "上海",
+            "city": "苏州",
             "trigger_type": "evening"
         })
         logger.info(f"晚安问候发送成功: {result.get('send_status')}")
