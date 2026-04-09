@@ -1,0 +1,12 @@
+# 每日定时问候工作流 - Docker Cron配置
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# 7:30 - 天气预报
+30 7 * * * cd /app && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'weather'})" >> /app/logs/cron.log 2>&1
+
+# 7:31 - 早安问候
+31 7 * * * cd /app && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})" >> /app/logs/cron.log 2>&1
+
+# 22:30 - 晚安问候
+30 22 * * * cd /app && python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'evening'})" >> /app/logs/cron.log 2>&1

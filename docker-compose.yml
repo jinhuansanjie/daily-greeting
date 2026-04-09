@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  daily-greeting:
+    build: .
+    container_name: daily-greeting
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    environment:
+      - PYTHONPATH=/app/src:/app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

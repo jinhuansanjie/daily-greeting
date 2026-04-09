@@ -1,0 +1,39 @@
+name: 每日定时问候
+
+on:
+  schedule:
+    # 7:30 UTC = 15:30 北京时间（如果需要北京时间请调整为UTC）
+    - cron: '30 0,1,14 * * *'  # 7:30, 7:31, 22:30 (UTC时间)
+  workflow_dispatch:
+
+jobs:
+  daily-greeting:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v3
+
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: 安装依赖
+      run: |
+        pip install -r requirements.txt
+
+    - name: 发送天气预报（7:30）
+      if: github.event.schedule == '30 0 * * *'
+      run: |
+        python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'weather'})"
+
+    - name: 发送早安问候（7:31）
+      if: github.event.schedule == '31 0 * * *'
+      run: |
+        python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})"
+
+    - name: 发送晚安问候（22:30）
+      if: github.event.schedule == '30 14 * * *'
+      run: |
+        python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'evening'})"
