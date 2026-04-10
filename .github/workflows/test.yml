@@ -60,8 +60,9 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
         python -c "
 import sys
+import os
 print('Python路径:', sys.path)
-print('当前目录:', import os; os.getcwd())
+print('当前目录:', os.getcwd())
 try:
     from src.graphs.graph import main_graph
     print('✓ main_graph导入成功')
