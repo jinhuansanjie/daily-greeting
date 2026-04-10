@@ -1,0 +1,29 @@
+name: 早安问候（北京时间 07:31）
+
+on:
+  schedule:
+    # 北京时间 07:31 = UTC 23:31（前一天）
+    - cron: '31 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  send-morning:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v3
+
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: 安装依赖
+      run: |
+        pip install -r requirements.txt
+
+    - name: 发送早安问候
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
+        python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})"
