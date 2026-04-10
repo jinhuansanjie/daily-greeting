@@ -19,41 +19,23 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: 打印环境信息
+    - name: 安装核心依赖
       run: |
-        echo "Python版本:"
-        python --version
-        echo ""
-        echo "当前目录:"
-        pwd
-        echo ""
-        echo "目录结构:"
-        ls -la
-        echo ""
-        echo "PYTHONPATH:"
-        echo $PYTHONPATH
-
-    - name: 安装依赖
-      run: |
-        echo "开始安装依赖..."
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        echo "依赖安装完成"
-
-    - name: 测试导入
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
-        python -c "from src.graphs.graph import main_graph; print('导入成功')"
+        echo "安装核心依赖..."
+        pip install langgraph langchain-core pydantic coze-coding-dev-sdk
+        echo "核心依赖安装完成"
 
     - name: 发送天气预报
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
         echo "开始发送天气预报..."
-        python -c "
-from src.graphs.graph import main_graph
+        python << 'EOF'
 import sys
+sys.path.insert(0, '/home/runner/work/daily-greeting/daily-greeting')
+sys.path.insert(0, '/home/runner/work/daily-greeting/daily-greeting/src')
 
 try:
+    from src.graphs.graph import main_graph
     result = main_graph.invoke({'city': '苏州', 'trigger_type': 'weather'})
     print('发送状态:', result.get('send_status'))
     if result.get('send_status') == 'success':
@@ -67,4 +49,4 @@ except Exception as e:
     import traceback
     traceback.print_exc()
     sys.exit(1)
-"
+EOF
