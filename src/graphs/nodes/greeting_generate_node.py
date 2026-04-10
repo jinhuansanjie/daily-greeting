@@ -11,7 +11,7 @@ from langgraph.runtime import Runtime
 from coze_coding_utils.runtime_ctx.context import Context
 from coze_coding_dev_sdk import LLMClient
 from langchain_core.messages import SystemMessage, HumanMessage
-from graphs.state import GreetingGenerateInput, GreetingGenerateOutput
+from src.graphs.state import GreetingGenerateInput, GreetingGenerateOutput
 
 
 def greeting_generate_node(state: GreetingGenerateInput, config: RunnableConfig, runtime: Runtime[Context]) -> GreetingGenerateOutput:
@@ -21,26 +21,26 @@ def greeting_generate_node(state: GreetingGenerateInput, config: RunnableConfig,
     integrations: llm
     """
     ctx = runtime.context
-    
+
     # 读取LLM配置文件
     cfg_file = os.path.join(os.getenv("COZE_WORKSPACE_PATH"), config['metadata']['llm_cfg'])
     with open(cfg_file, 'r') as fd:
         _cfg = json.load(fd)
-    
+
     llm_config = _cfg.get("config", {})
     sp = _cfg.get("sp", "")
     up = _cfg.get("up", "")
-    
+
     # 渲染用户提示词
     up_tpl = Template(up)
     user_prompt_content = up_tpl.render({
         "trigger_type": state.trigger_type,
         "weather_info": state.weather_info
     })
-    
+
     # 初始化LLM客户端
     client = LLMClient(ctx=ctx)
-    
+
     try:
         # 调用大语言模型
         response = client.invoke(
@@ -52,7 +52,7 @@ def greeting_generate_node(state: GreetingGenerateInput, config: RunnableConfig,
             temperature=llm_config.get("temperature", 0.7),
             max_completion_tokens=llm_config.get("max_completion_tokens", 1000)
         )
-        
+
         # 提取生成的问候语
         greeting_text = ""
         if isinstance(response.content, str):
@@ -65,9 +65,9 @@ def greeting_generate_node(state: GreetingGenerateInput, config: RunnableConfig,
             ]).strip()
         else:
             greeting_text = str(response.content).strip()
-        
+
         return GreetingGenerateOutput(greeting_text=greeting_text)
-        
+
     except Exception as e:
         # 生成失败时返回默认问候语
         if state.trigger_type == "morning":

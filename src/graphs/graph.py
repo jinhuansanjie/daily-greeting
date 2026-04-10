@@ -2,18 +2,18 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableConfig
 from langgraph.runtime import Runtime
-from graphs.state import (
+from src.graphs.state import (
     GlobalState,
     GraphInput,
     GraphOutput
 )
 
 # 导入节点函数
-from graphs.nodes.trigger_node import trigger_node
-from graphs.nodes.weather_query_node import weather_query_node
-from graphs.nodes.greeting_generate_node import greeting_generate_node
-from graphs.nodes.tts_node import tts_node
-from graphs.nodes.send_message_node import send_message_node
+from src.graphs.nodes.trigger_node import trigger_node
+from src.graphs.nodes.weather_query_node import weather_query_node
+from src.graphs.nodes.greeting_generate_node import greeting_generate_node
+from src.graphs.nodes.tts_node import tts_node
+from src.graphs.nodes.send_message_node import send_message_node
 
 
 # 创建状态图

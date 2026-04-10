@@ -12,7 +12,7 @@ import requests
 from langchain_core.runnables import RunnableConfig
 from langgraph.runtime import Runtime
 from coze_coding_utils.runtime_ctx.context import Context
-from graphs.state import SendMessageInput, SendMessageOutput
+from src.graphs.state import SendMessageInput, SendMessageOutput
 
 
 logger = logging.getLogger(__name__)
@@ -25,11 +25,11 @@ WECHAT_WEBHOOK_URL = f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={WEC
 def send_message_to_wechat(text: str, audio_url: str = "") -> dict:
     """
     通过企业微信机器人发送消息到微信群
-    
+
     Args:
         text: 文本消息内容
         audio_url: 语音文件URL（可选）
-    
+
     Returns:
         dict: 包含success和message的响应
     """
@@ -37,7 +37,7 @@ def send_message_to_wechat(text: str, audio_url: str = "") -> dict:
     content = text
     if audio_url:
         content = f"{text}\n\n🎙️ 语音播报：{audio_url}"
-    
+
     # 消息体
     payload = {
         "msgtype": "text",
@@ -45,7 +45,7 @@ def send_message_to_wechat(text: str, audio_url: str = "") -> dict:
             "content": content
         }
     }
-    
+
     try:
         # 调用企业微信机器人API发送消息
         response = requests.post(
@@ -53,9 +53,9 @@ def send_message_to_wechat(text: str, audio_url: str = "") -> dict:
             json=payload,
             timeout=30
         )
-        
+
         result = response.json()
-        
+
         if response.status_code == 200 and result.get("errcode") == 0:
             logger.info(f"消息发送成功到微信群")
             return {
@@ -69,7 +69,7 @@ def send_message_to_wechat(text: str, audio_url: str = "") -> dict:
                 "success": False,
                 "message": f"发送失败: {error_msg}"
             }
-            
+
     except requests.exceptions.Timeout:
         logger.error("请求超时")
         return {
@@ -97,21 +97,21 @@ def send_message_node(state: SendMessageInput, config: RunnableConfig, runtime: 
     integrations:
     """
     ctx = runtime.context
-    
+
     try:
         # 调用企业微信机器人发送消息
         result = send_message_to_wechat(
             text=state.greeting_text,
             audio_url=state.audio_url
         )
-        
+
         if result.get("success"):
             logger.info(f"成功发送到微信群: {result.get('message')}")
             return SendMessageOutput(send_status="success")
         else:
             logger.warning(f"发送到微信群失败: {result.get('message')}")
             return SendMessageOutput(send_status=f"failed: {result.get('message')}")
-            
+
     except Exception as e:
         logger.error(f"消息发送节点异常: {str(e)}")
         return SendMessageOutput(send_status="failed")

@@ -10,7 +10,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.runtime import Runtime
 from coze_coding_utils.runtime_ctx.context import Context
 from coze_coding_dev_sdk import TTSClient
-from graphs.state import TTSInput, TTSOutput
+from src.graphs.state import TTSInput, TTSOutput
 
 
 def tts_node(state: TTSInput, config: RunnableConfig, runtime: Runtime[Context]) -> TTSOutput:
@@ -20,10 +20,10 @@ def tts_node(state: TTSInput, config: RunnableConfig, runtime: Runtime[Context])
     integrations: audio
     """
     ctx = runtime.context
-    
+
     # 初始化TTS客户端
     tts_client = TTSClient(ctx=ctx)
-    
+
     try:
         # 调用TTS服务生成语音
         audio_url, audio_size = tts_client.synthesize(
@@ -33,9 +33,9 @@ def tts_node(state: TTSInput, config: RunnableConfig, runtime: Runtime[Context])
             audio_format="mp3",
             sample_rate=24000
         )
-        
+
         return TTSOutput(audio_url=audio_url)
-        
+
     except Exception as e:
         # TTS失败时返回空URL
         return TTSOutput(audio_url="")
