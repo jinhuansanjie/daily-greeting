@@ -59,15 +59,15 @@ jobs:
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
         python -c "
-import sys
-import os
-print('Python路径:', sys.path)
-print('当前目录:', os.getcwd())
-try:
-    from src.graphs.graph import main_graph
-    print('✓ main_graph导入成功')
-except Exception as e:
-    print('✗ 导入失败:', str(e))
-    import traceback
-    traceback.print_exc()
-"
+        import sys
+        import os
+        print('Python路径:', sys.path)
+        print('当前目录:', os.getcwd())
+        try:
+            from src.graphs.graph import main_graph
+            print('✓ main_graph导入成功')
+        except Exception as e:
+            print('✗ 导入失败:', str(e))
+            import traceback
+            traceback.print_exc()
+        "

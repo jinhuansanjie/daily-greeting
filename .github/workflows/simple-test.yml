@@ -42,12 +42,12 @@ jobs:
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
         python -c "
-try:
-    import src.graphs.state as state_module
-    print('✓ state.py导入成功')
-    print('模块内容:', dir(state_module))
-except Exception as e:
-    print('✗ 导入失败:', str(e))
-    import traceback
-    traceback.print_exc()
-"
+        try:
+            import src.graphs.state as state_module
+            print('✓ state.py导入成功')
+            print('模块内容:', dir(state_module))
+        except Exception as e:
+            print('✗ 导入失败:', str(e))
+            import traceback
+            traceback.print_exc()
+        "
