@@ -1,0 +1,53 @@
+name: 简单测试（Step-by-Step）
+
+on:
+  workflow_dispatch:
+
+jobs:
+  simple-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v3
+
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: 测试Python版本
+      run: |
+        python --version
+
+    - name: 检查当前目录
+      run: |
+        pwd
+        ls -la
+
+    - name: 检查src目录
+      run: |
+        ls -la src/
+
+    - name: 测试导入（最简单版）
+      run: |
+        python -c "import sys; print('Python:', sys.version); print('OK')"
+
+    - name: 安装pydantic
+      run: |
+        pip install pydantic
+        python -c "import pydantic; print('pydantic:', pydantic.__version__)"
+
+    - name: 测试导入state.py
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
+        python -c "
+try:
+    import src.graphs.state as state_module
+    print('✓ state.py导入成功')
+    print('模块内容:', dir(state_module))
+except Exception as e:
+    print('✗ 导入失败:', str(e))
+    import traceback
+    traceback.print_exc()
+"
