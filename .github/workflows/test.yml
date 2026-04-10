@@ -1,0 +1,72 @@
+name: 测试工作流（调试用）
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v3
+
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: 测试1：基础Python
+      run: |
+        python --version
+        python -c "print('Python工作正常')"
+
+    - name: 测试2：安装langgraph
+      run: |
+        pip install langgraph
+        python -c "import langgraph; print('langgraph安装成功')"
+
+    - name: 测试3：安装langchain-core
+      run: |
+        pip install langchain-core
+        python -c "import langchain_core; print('langchain-core安装成功')"
+
+    - name: 测试4：安装pydantic
+      run: |
+        pip install pydantic
+        python -c "import pydantic; print('pydantic安装成功')"
+
+    - name: 测试5：安装coze-coding-dev-sdk
+      run: |
+        pip install coze-coding-dev-sdk
+        python -c "import coze_coding_dev_sdk; print('coze-coding-dev-sdk安装成功')"
+
+    - name: 测试6：检查文件结构
+      run: |
+        echo "当前目录:"
+        pwd
+        echo ""
+        echo "文件列表:"
+        find . -name "*.py" -type f | head -20
+
+    - name: 测试7：检查src目录
+      run: |
+        ls -la src/
+        ls -la src/graphs/
+        ls -la src/graphs/nodes/
+
+    - name: 测试8：尝试导入main_graph
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
+        python -c "
+import sys
+print('Python路径:', sys.path)
+print('当前目录:', import os; os.getcwd())
+try:
+    from src.graphs.graph import main_graph
+    print('✓ main_graph导入成功')
+except Exception as e:
+    print('✗ 导入失败:', str(e))
+    import traceback
+    traceback.print_exc()
+"
