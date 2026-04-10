@@ -19,11 +19,52 @@ jobs:
       with:
         python-version: '3.12'
 
+    - name: 打印环境信息
+      run: |
+        echo "Python版本:"
+        python --version
+        echo ""
+        echo "当前目录:"
+        pwd
+        echo ""
+        echo "目录结构:"
+        ls -la
+        echo ""
+        echo "PYTHONPATH:"
+        echo $PYTHONPATH
+
     - name: 安装依赖
       run: |
+        echo "开始安装依赖..."
+        pip install --upgrade pip
         pip install -r requirements.txt
+        echo "依赖安装完成"
+
+    - name: 测试导入
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
+        python -c "from src.graphs.graph import main_graph; print('导入成功')"
 
     - name: 发送早安问候
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src
-        python -c "from src.graphs.graph import main_graph; main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})"
+        echo "开始发送早安问候..."
+        python -c "
+from src.graphs.graph import main_graph
+import sys
+
+try:
+    result = main_graph.invoke({'city': '苏州', 'trigger_type': 'morning'})
+    print('发送状态:', result.get('send_status'))
+    if result.get('send_status') == 'success':
+        print('✓ 早安问候发送成功')
+        sys.exit(0)
+    else:
+        print('✗ 早安问候发送失败')
+        sys.exit(1)
+except Exception as e:
+    print('✗ 执行出错:', str(e))
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
+"
